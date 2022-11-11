@@ -1,9 +1,13 @@
-function init() {
+import * as THREE from 'three' ;
+
+
+function init() 
+{
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     var scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     // create a render and set the size
     var renderer = new THREE.WebGLRenderer();
@@ -66,3 +70,7 @@ function init() {
     // render the scene
     renderer.render(scene, camera);
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;
