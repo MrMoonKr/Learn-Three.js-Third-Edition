@@ -4,6 +4,7 @@
     "description": "Sample code for Learning Three.js third edition.",
     "main": "index.js",
     "scripts": {
+        "start.dev": "webpack serve --open",
         "build.dev": "webpack build --mode=development",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -18,10 +19,13 @@
     },
     "homepage": "https://github.com/josdirksen/learning-threejs-third#readme",
     "dependencies": {
-        "three": "^0.91.0"
+        "dat.gui": "^0.7.9",
+        "stats.js": "^0.17.0",
+        "three": "^0.146.0"
     },
     "devDependencies": {
         "webpack": "^5.75.0",
-        "webpack-cli": "^4.10.0"
+        "webpack-cli": "^4.10.0",
+        "webpack-dev-server": "^4.11.1"
     }
 }

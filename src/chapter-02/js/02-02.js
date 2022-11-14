@@ -1,4 +1,10 @@
-function init() {
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+
+import { initStats, initTrackballControls } from '../../js/helper.js';
+
+function init() 
+{
 
     var stats = initStats();
 
@@ -126,3 +132,7 @@ function init() {
         renderer.render(scene, camera);
     }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

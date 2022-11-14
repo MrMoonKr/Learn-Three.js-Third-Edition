@@ -1,5 +1,11 @@
-function init() {
-    var stats = initStats();
+import * as THREE from 'three';
+import * as Helpers from '../../js/helper.js' ;
+
+import * as dat from 'dat.gui';
+
+function init() 
+{
+    var stats = Helpers.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     var scene = new THREE.Scene();
@@ -89,7 +95,7 @@ function init() {
 
 
     // attach them here, since appendChild needs to be called first
-    var trackballControls = initTrackballControls(camera, renderer);
+    var trackballControls = Helpers.initTrackballControls( camera, renderer );
     var clock = new THREE.Clock();
 
     render();
@@ -114,3 +120,7 @@ function init() {
         renderer.render(scene, camera);
     }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

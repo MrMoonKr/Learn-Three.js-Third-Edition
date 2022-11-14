@@ -1,5 +1,25 @@
-function init() {
-    var stats = initStats();
+import * as THREE from 'three';
+
+// import Stats from 'stats.js';
+
+/*
+function initStats(type) {
+
+    var panelType = ( typeof type !== 'undefined' && type ) && ( !isNaN( type ) ) ? parseInt( type ) : 0;
+    var stats = new Stats();
+
+    stats.showPanel( panelType ); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
+
+    return stats;
+}
+*/
+
+import * as Helpers from '../../js/helper.js' ;
+
+function init() 
+{
+    var stats = Helpers.initStats();
 
     // default setup
     var scene = new THREE.Scene();
@@ -93,3 +113,7 @@ function init() {
         renderer.render(scene, camera);
     }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

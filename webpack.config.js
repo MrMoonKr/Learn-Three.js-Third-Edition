@@ -6,7 +6,20 @@ module.exports = {
 
     entry: {
         '01-01': './src/chapter-01/js/01-01.js',
-        '01-02': './src/chapter-01/js/01-02.js'
+        '01-02': './src/chapter-01/js/01-02.js',
+        '01-03': './src/chapter-01/js/01-03.js',
+        '01-04': './src/chapter-01/js/01-04.js',
+        '01-05': './src/chapter-01/js/01-05.js',
+        '01-06': './src/chapter-01/js/01-06.js',
+        
+        '02-01': './src/chapter-02/js/02-01.js',
+        '02-02': './src/chapter-02/js/02-02.js',
+        '02-03': './src/chapter-02/js/02-03.js',
+        '02-04': './src/chapter-02/js/02-04.js',
+        '02-05': './src/chapter-02/js/02-05.js',
+        '02-06': './src/chapter-02/js/02-08.js',
+        '02-07': './src/chapter-02/js/02-07.js',
+        '02-08': './src/chapter-02/js/02-08.js',
 
     },
 
@@ -37,6 +50,17 @@ module.exports = {
             //append: '\n//# sourceMappingURL=[file].map'
             append: '\n//# sourceMappingURL=[name].bundle.js.map'
         } )
-    ]
+    ],
+
+    devServer: {
+        port: 5110,
+        //static: false,
+        // static: [
+        //     'assets',
+        //     'css',
+        //     'src'
+        // ],
+        static: path.resolve( __dirname ),
+    }
 
 }

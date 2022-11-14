@@ -1,4 +1,10 @@
-function init() {
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+
+import * as Helpers from '../../js/helper.js' ;
+
+function init() 
+{
 
     // listen to the resize events
     window.addEventListener('resize', onResize, false);
@@ -8,7 +14,7 @@ function init() {
     var renderer;
 
     // initialize stats
-    var stats = initStats();
+    var stats = Helpers.initStats();
 
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
@@ -27,7 +33,7 @@ function init() {
     renderer.shadowMap.enabled = true;
 
     // initialize the trackball controls and the clock which is needed
-    var trackballControls = initTrackballControls(camera, renderer);
+    var trackballControls = Helpers.initTrackballControls( camera, renderer );
     var clock = new THREE.Clock();
 
         
@@ -133,3 +139,7 @@ function init() {
         renderer.setSize(window.innerWidth, window.innerHeight);
     }    
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;
