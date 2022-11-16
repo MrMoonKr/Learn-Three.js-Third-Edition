@@ -1,103 +1,121 @@
-function init() {
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
 
-  // use the defaults
-  var stats = initStats();
-  var renderer = initRenderer();
+import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare' ;
 
-  // create a scene, that will hold all our elements such as objects, cameras and lights.
-  var scene = new THREE.Scene();
-  scene.overrideMaterial = new THREE.MeshDepthMaterial();
-
-  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 50, 110);
-  camera.position.set(-50, 40, 50);
-  camera.lookAt(scene.position);
+import {
+    initStats,
+    initTrackballControls,
+    initRenderer,
+    initCamera,
+} from '../../js/helper.js';
 
 
-  // call the render function
-  var step = 0;
+function init() 
+{
 
-  var controls = new function () {
-    this.cameraNear = camera.near;
-    this.cameraFar = camera.far;
-    this.rotationSpeed = 0.02;
-    this.numberOfObjects = scene.children.length;
+    // use the defaults
+    var stats = initStats();
+    var renderer = initRenderer();
 
-    this.removeCube = function () {
-      var allChildren = scene.children;
-      var lastObject = allChildren[allChildren.length - 1];
-      if (lastObject instanceof THREE.Mesh) {
-        scene.remove(lastObject);
+    // create a scene, that will hold all our elements such as objects, cameras and lights.
+    var scene = new THREE.Scene();
+    scene.overrideMaterial = new THREE.MeshDepthMaterial();
+
+    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 50, 110 );
+    camera.position.set( -50, 40, 50 );
+    camera.lookAt( scene.position );
+
+
+    // call the render function
+    var step = 0;
+
+    var controls = new function () {
+        this.cameraNear = camera.near;
+        this.cameraFar = camera.far;
+        this.rotationSpeed = 0.02;
         this.numberOfObjects = scene.children.length;
-      }
+
+        this.removeCube = function () {
+            var allChildren = scene.children;
+            var lastObject = allChildren[ allChildren.length - 1 ];
+            if ( lastObject instanceof THREE.Mesh ) {
+                scene.remove( lastObject );
+                this.numberOfObjects = scene.children.length;
+            }
+        };
+
+        this.addCube = function () {
+
+            var cubeSize = Math.ceil( 3 + ( Math.random() * 3 ) );
+            var cubeGeometry = new THREE.BoxGeometry( cubeSize, cubeSize, cubeSize );
+            var cubeMaterial = new THREE.MeshLambertMaterial( {
+                color: Math.random() * 0xffffff
+            } );
+            var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+            cube.castShadow = true;
+
+            // position the cube randomly in the scene
+            cube.position.x = -60 + Math.round( ( Math.random() * 100 ) );
+            cube.position.y = Math.round( ( Math.random() * 10 ) );
+            cube.position.z = -100 + Math.round( ( Math.random() * 150 ) );
+
+            // add the cube to the scene
+            scene.add( cube );
+            this.numberOfObjects = scene.children.length;
+        };
+
+        this.outputObjects = function () {
+            console.log( scene.children );
+        }
     };
 
-    this.addCube = function () {
+    var gui = new dat.GUI();
+    addBasicMaterialSettings( gui, controls, scene.overrideMaterial );
+    var spGui = gui.addFolder( "THREE.MeshDepthMaterial" );
+    spGui.add( scene.overrideMaterial, 'wireframe' );
+    spGui.add( scene.overrideMaterial, 'wireframeLinewidth', 0, 20 );
 
-      var cubeSize = Math.ceil(3 + (Math.random() * 3));
-      var cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-      var cubeMaterial = new THREE.MeshLambertMaterial({
-        color: Math.random() * 0xffffff
-      });
-      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-      cube.castShadow = true;
+    gui.add( controls, 'rotationSpeed', 0, 0.5 );
+    gui.add( controls, 'addCube' );
+    gui.add( controls, 'removeCube' );
+    gui.add( controls, 'cameraNear', 0, 100 ).onChange( function ( e ) {
+        camera.near = e;
+        camera.updateProjectionMatrix();
+    } );
+    gui.add( controls, 'cameraFar', 50, 200 ).onChange( function ( e ) {
+        camera.far = e;
+        camera.updateProjectionMatrix();
+    } );
 
-      // position the cube randomly in the scene
-      cube.position.x = -60 + Math.round((Math.random() * 100));
-      cube.position.y = Math.round((Math.random() * 10));
-      cube.position.z = -100 + Math.round((Math.random() * 150));
-
-      // add the cube to the scene
-      scene.add(cube);
-      this.numberOfObjects = scene.children.length;
-    };
-
-    this.outputObjects = function () {
-      console.log(scene.children);
+    var i = 0;
+    while ( i < 10 ) {
+        controls.addCube();
+        i++;
     }
-  };
-
-  var gui = new dat.GUI();
-  addBasicMaterialSettings(gui, controls, scene.overrideMaterial);
-  var spGui = gui.addFolder("THREE.MeshDepthMaterial");
-  spGui.add(scene.overrideMaterial, 'wireframe');
-  spGui.add(scene.overrideMaterial, 'wireframeLinewidth', 0, 20);
-
-  gui.add(controls, 'rotationSpeed', 0, 0.5);
-  gui.add(controls, 'addCube');
-  gui.add(controls, 'removeCube');
-  gui.add(controls, 'cameraNear', 0, 100).onChange(function (e) {
-    camera.near = e;
-    camera.updateProjectionMatrix();
-  });
-  gui.add(controls, 'cameraFar', 50, 200).onChange(function (e) {
-    camera.far = e;
-    camera.updateProjectionMatrix();
-  });
-
-  var i = 0;
-  while (i < 10) {
-    controls.addCube();
-    i++;
-  }
 
 
-  render();
+    render();
 
-  function render() {
-    stats.update();
+    function render() {
+        stats.update();
 
-    // rotate the cubes around its axes
-    scene.traverse(function (e) {
-      if (e instanceof THREE.Mesh) {
+        // rotate the cubes around its axes
+        scene.traverse( function ( e ) {
+            if ( e instanceof THREE.Mesh ) {
 
-        e.rotation.x += controls.rotationSpeed;
-        e.rotation.y += controls.rotationSpeed;
-        e.rotation.z += controls.rotationSpeed;
-      }
-    });
+                e.rotation.x += controls.rotationSpeed;
+                e.rotation.y += controls.rotationSpeed;
+                e.rotation.z += controls.rotationSpeed;
+            }
+        } );
 
-    // render using requestAnimationFrame
-    requestAnimationFrame(render);
-    renderer.render(scene, camera);
-  }
+        // render using requestAnimationFrame
+        requestAnimationFrame( render );
+        renderer.render( scene, camera );
+    }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

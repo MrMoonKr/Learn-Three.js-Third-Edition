@@ -28,6 +28,33 @@ module.exports = {
         '03-05': './src/chapter-03/js/03-05.js',
         '03-06': './src/chapter-03/js/03-06.js',
         '03-07': './src/chapter-03/js/03-07.js',
+        
+        '04-01': './src/chapter-04/js/04-01.js',
+        '04-02': './src/chapter-04/js/04-02.js',
+        '04-03': './src/chapter-04/js/04-03.js',
+        '04-04': './src/chapter-04/js/04-04.js',
+        '04-05': './src/chapter-04/js/04-05.js',
+        '04-06': './src/chapter-04/js/04-06.js',
+        '04-07': './src/chapter-04/js/04-07.js',
+        '04-08': './src/chapter-04/js/04-08.js',
+        '04-09': './src/chapter-04/js/04-09.js',
+        '04-10': './src/chapter-04/js/04-10.js',
+        '04-11': './src/chapter-04/js/04-11.js',
+        '04-12': './src/chapter-04/js/04-12.js',
+        '04-13': './src/chapter-04/js/04-13.js',
+        
+        '05-01': './src/chapter-05/js/05-01.js',
+        '05-02': './src/chapter-05/js/05-02.js',
+        '05-03': './src/chapter-05/js/05-03.js',
+        '05-04': './src/chapter-05/js/05-04.js',
+        '05-05': './src/chapter-05/js/05-05.js',
+        '05-06': './src/chapter-05/js/05-06.js',
+        '05-07': './src/chapter-05/js/05-07.js',
+        '05-08': './src/chapter-05/js/05-08.js',
+        '05-09': './src/chapter-05/js/05-09.js',
+        '05-10': './src/chapter-05/js/05-10.js',
+        '05-11': './src/chapter-05/js/05-11.js',
+        
 
     },
 
