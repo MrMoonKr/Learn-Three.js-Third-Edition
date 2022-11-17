@@ -2,44 +2,45 @@ import * as THREE from 'three';
 import Stats from "stats.js";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls' ;
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls.js' ;
+import { FlyControls } from 'three/examples/jsm/controls/FlyControls.js' ;
 
 /**
- * Initialize the statistics domelement
+ * FPS 통계치 DOM 객체 초기화
  * 
  * @param {Number} type 0: fps, 1: ms, 2: mb, 3+: custom
- * @returns stats javascript object
+ * @returns {Stats} stats javascript object
  */
-export function initStats(type) 
+export function initStats( type ) 
 {
+    var panelType = ( typeof type !== 'undefined' && type ) && ( !isNaN( type ) )  ? parseInt( type ) : 0 ;
+    var stats     = new Stats() ;
 
-    var panelType = (typeof type !== 'undefined' && type) && (!isNaN(type)) ? parseInt(type) : 0;
-    var stats = new Stats();
-
-    stats.showPanel(panelType); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(stats.dom);
+    stats.showPanel( panelType ) ; // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
 
     return stats;
 }
 
 /**
  * Initialize a simple default renderer and binds it to the "webgl-output" dom
-* element.
+ * element.
  * 
- * @param additionalProperties Additional properties to pass into the renderer
+ * @param { THREE.WebGLRendererParameters } additionalProperties Additional properties to pass into the renderer
+ * @param { String } domID webgl canvas container DOM id
  */
-export function initRenderer(additionalProperties) 
+export function initRenderer( additionalProperties, domID = 'webgl-output' ) 
 {
+    var props = ( typeof additionalProperties !== 'undefined' && additionalProperties ) ? additionalProperties : {} ;
+    var renderer = new THREE.WebGLRenderer( props );
+    renderer.shadowMap.enabled = true ;
+    renderer.shadowMapSoft = true ;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap ;
 
-    var props = (typeof additionalProperties !== 'undefined' && additionalProperties) ? additionalProperties : {};
-    var renderer = new THREE.WebGLRenderer(props);
+    renderer.setClearColor( new THREE.Color( 0x000000 ) );
+    renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
-    renderer.shadowMapSoft = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-    renderer.setClearColor(new THREE.Color(0x000000));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    document.getElementById("webgl-output").appendChild(renderer.domElement);
+    document.getElementById( domID ).appendChild( renderer.domElement );
 
     return renderer;
 }
@@ -126,7 +127,7 @@ export function initDefaultDirectionalLighting(scene, initialPosition)
  * @param {THREE.Camera} camera 
  * @param {THREE.Renderer} renderer 
  */
-export function initTrackballControls(camera, renderer) 
+export function initTrackballControls( camera, renderer ) 
 {
     var trackballControls = new TrackballControls(camera, renderer.domElement);
     trackballControls.rotateSpeed = 1.0;
@@ -139,6 +140,29 @@ export function initTrackballControls(camera, renderer)
     trackballControls.keys = [65, 83, 68];
 
     return trackballControls;
+}
+
+export function initFlyControls( camera, renderer )
+{
+    const flyControls = new FlyControls( camera, renderer.domElement ) ;
+    flyControls.dragToLook = true ;
+    flyControls.movementSpeed = 10 ;
+    flyControls.rollSpeed = 1 ;
+
+    return flyControls ;
+}
+
+/**
+ * 
+ * @param {THREE.Camera} camera 
+ * @param {THREE.Renderer} renderer 
+ * @returns 
+ */
+export function initFirstPersonControls( camera, renderer )
+{
+    const firstPersonControls = new FirstPersonControls( camera, renderer.domElement );
+
+    return firstPersonControls ;
 }
 
 /**

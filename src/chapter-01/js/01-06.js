@@ -5,42 +5,36 @@ import * as Helpers from '../../js/helper.js' ;
 
 function init() 
 {
+    window.addEventListener( 'resize', onResize, false ); // 창크기 조절 이벤트 처리 콜백 등록
 
-    // listen to the resize events
-    window.addEventListener('resize', onResize, false);
+    //var camera;
+    //var scene;
+    //var renderer;
 
-    var camera;
-    var scene;
-    var renderer;
-
-    // initialize stats
-    var stats = Helpers.initStats();
-
+    // create stats
+    const stats = Helpers.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    
-
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  
     // create a render and set the size
-    renderer = new THREE.WebGLRenderer();
-
-    renderer.setClearColor(new THREE.Color(0x000000));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor( new THREE.Color( 0x000000 ) );
+    renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
 
     // initialize the trackball controls and the clock which is needed
     var trackballControls = Helpers.initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
 
+    var clock = new THREE.Clock();
         
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
-    var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-    var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    var planeGeometry = new THREE.PlaneGeometry( 60, 20, 1, 1 );
+    var planeMaterial = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -50,12 +44,12 @@ function init()
     plane.position.z = 0;
 
     // add the plane to the scene
-    scene.add(plane);
+    scene.add( plane );
 
     // create a cube
-    var cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-    var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
-    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0xff0000 } );
+    var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.castShadow = true;
 
     // position the cube
@@ -64,11 +58,11 @@ function init()
     cube.position.z = 0;
 
     // add the cube to the scene
-    scene.add(cube);
+    scene.add( cube );
 
-    var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-    var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff });
-    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    var sphereGeometry = new THREE.SphereGeometry( 4, 20, 20 );
+    var sphereMaterial = new THREE.MeshLambertMaterial( { color: 0x7777ff } );
+    var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 
     // position the sphere
     sphere.position.x = 20;
@@ -77,46 +71,46 @@ function init()
     sphere.castShadow = true;
 
     // add the sphere to the scene
-    scene.add(sphere);
+    scene.add( sphere );
 
     // position and point the camera to the center of the scene
     camera.position.x = -30;
     camera.position.y = 40;
     camera.position.z = 30;
-    camera.lookAt(scene.position);
+    camera.lookAt( scene.position );
 
     // add subtle ambient lighting
-    var ambienLight = new THREE.AmbientLight(0x353535);
-    scene.add(ambienLight);
+    var ambienLight = new THREE.AmbientLight( 0x353535 );
+    scene.add( ambienLight );
 
     // add spotlight for the shadows
-    var spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-10, 20, -5);
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( -10, 20, -5 );
     spotLight.castShadow = true;
-    scene.add(spotLight);
+    scene.add( spotLight );
 
     // add the output of the renderer to the html element
-    document.getElementById("webgl-output").appendChild(renderer.domElement);
+    document.getElementById("webgl-output").appendChild( renderer.domElement );
 
     // call the render function
-    var step = 0;
+    var stepRadian = 0;
 
-    var controls = new function () {
+    var controls = new function() 
+    {
         this.rotationSpeed = 0.02;
         this.bouncingSpeed = 0.03;
     };
 
     var gui = new dat.GUI();
-    gui.add(controls, 'rotationSpeed', 0, 0.5);
-    gui.add(controls, 'bouncingSpeed', 0, 0.5);
+    gui.add( controls, 'rotationSpeed', 0, 0.5 );
+    gui.add( controls, 'bouncingSpeed', 0, 0.5 );
 
     render();
 
-    function render() {
-
-        // update the stats and the controls
-        trackballControls.update(clock.getDelta());
+    function render() 
+    {
         stats.update();
+        trackballControls.update( clock.getDelta() );
 
         // rotate the cube around its axes
         cube.rotation.x += controls.rotationSpeed;
@@ -124,19 +118,22 @@ function init()
         cube.rotation.z += controls.rotationSpeed;
 
         // bounce the sphere up and down
-        step += controls.bouncingSpeed;
-        sphere.position.x = 20 + (10 * (Math.cos(step)));
-        sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
+        stepRadian += controls.bouncingSpeed;
+        sphere.position.x = 20 + ( 10 * (Math.cos(stepRadian)) );
+        sphere.position.y =  2 + ( 10 * Math.abs( Math.sin( stepRadian ) ) );
 
+        renderer.render( scene, camera );
+        
         // render using requestAnimationFrame
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
+        requestAnimationFrame( render );
     }
 
-    function onResize() {
+    function onResize() 
+    {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
     }    
 }
 

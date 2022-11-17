@@ -6,13 +6,19 @@ import { ParametricGeometries } from 'three/examples/jsm/geometries/ParametricGe
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry' ;
 import * as SceneUtils from 'three/examples/jsm/utils/SceneUtils' ;
 
-import { initStats, initTrackballControls } from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
+
+const params = {
+    'clear color': "#949494",
+    'ambient light' : "#949494",
+    'spot light' : "#FFFFFF"
+}
 
 
 function init() 
 {
 
-    var stats = initStats();
+    var stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     var scene = new THREE.Scene();
@@ -23,7 +29,7 @@ function init()
     // create a render and set the size
     var renderer = new THREE.WebGLRenderer();
 
-    renderer.setClearColor( new THREE.Color( 0x000000 ) );
+    renderer.setClearColor( new THREE.Color( 0x949494 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
 
@@ -162,18 +168,34 @@ function init()
     }
 
 
-    var trackballControls = initTrackballControls( camera, renderer );
+    //var trackballControls = Helper.initTrackballControls( camera, renderer );
     var clock = new THREE.Clock();
+
+    //const firstPersonCtrl = Helper.initFirstPersonControls( camera, renderer ) ;
+    const flyCtrl = Helper.initFlyControls( camera, renderer ) ;
+
+    const gui = new dat.GUI();
+    gui.addColor( params, 'clear color' );
+    gui.addColor( params, 'ambient light' );
+    gui.addColor( params, 'spot light');
 
     render();
 
-    function render() {
-        trackballControls.update( clock.getDelta() );
+    function render() 
+    {
+        //trackballControls.update( clock.getDelta() );
+        //firstPersonCtrl.update( clock.getDelta() );
+        flyCtrl.update( clock.getDelta() ) ;
         stats.update();
 
+        ambientLight.color.set( params['ambient light'] );
+        spotLight.color.set( params['spot light'] );
+
+        renderer.setClearColor( params['clear color'] );
+        renderer.render( scene, camera );
+        
         // render using requestAnimationFrame
         requestAnimationFrame( render );
-        renderer.render( scene, camera );
     }
 }
 

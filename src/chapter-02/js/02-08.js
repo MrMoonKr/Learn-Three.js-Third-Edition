@@ -3,6 +3,11 @@ import * as dat from 'dat.gui';
 
 import { initStats, initTrackballControls } from '../../js/helper.js';
 
+
+const params = {
+    clear: "#949494"
+}
+
 function init() {
 
     var stats = initStats();
