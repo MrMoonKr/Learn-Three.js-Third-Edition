@@ -1,15 +1,21 @@
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+
+import * as Helper from '../../js/helper.js';
+
+
 function init() {
-    var stats = initStats();
-    var renderer = initRenderer();
-    var camera = initCamera();
+    var stats = Helper.initStats();
+    var renderer = Helper.initRenderer();
+    var camera = Helper.initCamera();
     var scene = new THREE.Scene();
 
-    var trackballControls = initTrackballControls(camera, renderer);
+    var trackballControls = Helper.initTrackballControls(camera, renderer);
     var clock = new THREE.Clock();
   
-    initDefaultLighting(scene);  
+    Helper.initDefaultLighting(scene);  
 
-    var groundPlane = addGroundPlane(scene)
+    var groundPlane = Helper.addGroundPlane(scene)
     groundPlane.position.y = 0;
 
     // create a cube
@@ -105,3 +111,7 @@ function init() {
         renderer.render(scene, camera);
     }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

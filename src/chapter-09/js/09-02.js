@@ -1,15 +1,24 @@
-function init() {
-    var stats = initStats();
-    var renderer = initRenderer();
-    var camera = initCamera();
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+
+import { Projector } from 'three/examples/jsm/renderers/Projector.js' ;
+
+import * as Helper from '../../js/helper.js';
+
+
+function init() 
+{
+    var stats = Helper.initStats();
+    var renderer = Helper.initRenderer();
+    var camera = Helper.initCamera();
     var scene = new THREE.Scene();
 
-    var projector = new THREE.Projector();
+    var projector = new Projector();
     // document.getElementById("webgl-output")
     document.addEventListener('mousedown', onDocumentMouseDown, false);
     document.addEventListener('mousemove', onDocumentMouseMove, false);    
 
-    initDefaultLighting(scene);
+    Helper.initDefaultLighting(scene);
 
     var groundPlane = addGroundPlane(scene)
     groundPlane.position.y = 0;
@@ -154,3 +163,7 @@ function init() {
         }
     }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;

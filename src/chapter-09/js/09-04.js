@@ -1,31 +1,50 @@
-function init() {
-  var stats = initStats();
-  var renderer = initRenderer();
-  var camera = initCamera();
-  var scene = new THREE.Scene();
-  var clock = new THREE.Clock();
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+import chroma from 'chroma-js';
 
-  initDefaultLighting(scene);  
+import { OBJLoader } from 'three/examples/jsm/loaders/objloader.js';
+import { TrackballControls } from 'three/examples/jsm/controls/trackballcontrols.js';
 
-  var trackballControls = new THREE.TrackballControls(camera);
-  trackballControls.rotateSpeed = 1.0;
-  trackballControls.zoomSpeed = 1.0;
-  trackballControls.panSpeed = 1.0;
+import * as Helper from '../../js/helper.js';
+import { setRandomColors } from './util.js' ;
 
-  var loader = new THREE.OBJLoader();
-  loader.load("../../assets/models/city/city.obj", function (object) {
+function init() 
+{
+    var stats = Helper.initStats();
+    var renderer = Helper.initRenderer();
+    var camera = Helper.initCamera();
+    var scene = new THREE.Scene();
+    var clock = new THREE.Clock();
 
-    var scale = chroma.scale(['red', 'green', 'blue']);
-    setRandomColors(object, scale);
-    mesh = object ;
-    scene.add(mesh);
-  });
+    Helper.initDefaultLighting( scene );
 
-  render();
-  function render() {
-    stats.update();
-    trackballControls.update(clock.getDelta());
-    requestAnimationFrame(render);
-    renderer.render(scene, camera)
-  }   
+    var trackballControls = new TrackballControls( camera, renderer.domElement );
+    trackballControls.rotateSpeed = 1.0;
+    trackballControls.zoomSpeed = 1.0;
+    trackballControls.panSpeed = 1.0;
+
+    var loader = new OBJLoader();
+    loader.load( "../../assets/models/city/city.obj", function( object ) {
+
+        var scale = chroma.scale( [ 'red', 'green', 'blue' ] );
+        setRandomColors( object, scale );
+        let mesh = object;
+        scene.add( mesh );
+    } );
+
+    render();
+
+    function render() 
+    {
+        stats.update();
+        trackballControls.update( clock.getDelta() );
+
+        renderer.render( scene, camera );
+
+        requestAnimationFrame( render );
+    }
 }
+
+window.addEventListener( 'load' , () => {
+    init() ;
+} ) ;
