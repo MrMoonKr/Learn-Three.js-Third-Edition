@@ -8,6 +8,7 @@ import { TrackballControls } from 'three/examples/jsm/controls/trackballcontrols
 import * as Helper from '../../js/helper.js';
 import { setRandomColors } from './util.js' ;
 
+
 function init() 
 {
     var stats = Helper.initStats();

@@ -73,6 +73,9 @@ module.exports = {
         // '09-16': './src/chapter-09/js/09-16.js',
         // '09-17': './src/chapter-09/js/09-17.js',
         // '09-18': './src/chapter-09/js/09-18.js',
+        
+        '13-01': './src/chapter-13/js/13-01.js',
+        '13-02': './src/chapter-13/js/13-02.js',
 
     },
 

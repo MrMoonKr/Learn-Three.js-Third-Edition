@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 import { initStats, initTrackballControls } from '../../js/helper.js';
+import { TrackballController } from '../../js/TrackballController.js' ;
 
 function init() 
 {
@@ -109,14 +110,15 @@ function init()
     gui.add(controls, 'numberOfObjects').listen();
 
     // attach them here, since appendChild needs to be called first
-    var trackballControls = initTrackballControls(camera, renderer);
+    // var trackballControls = initTrackballControls(camera, renderer);
+    let trackballControls = new TrackballController( camera, renderer.domElement ) ;
     var clock = new THREE.Clock();
 
     render();
     
     function render() {
 
-        trackballControls.update(clock.getDelta());
+        trackballControls.update( clock.getDelta() );
         stats.update();
 
         // rotate the cubes around its axes

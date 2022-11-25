@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+import chroma from 'chroma-js';
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js' ;
+import { OBJLoader } from 'three/examples/jsm/loaders/objloader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import * as Helper from '../../js/helper.js';
+import { setRandomColors } from './util.js' ;
 
 
 function init() 
@@ -20,7 +23,7 @@ function init()
     dirLight.position.set( 50, 10, 0 );
     scene.add( dirLight );
 
-    var orbitControls = new OrbitControls( camera );
+    var orbitControls = new OrbitControls( camera, renderer.domElement );
     orbitControls.autoRotate = true;
 
     var planetTexture = new THREE.TextureLoader().load( "../../assets/textures/mars/mars_1k_color.jpg" );
@@ -34,11 +37,14 @@ function init()
 
     render();
 
-    function render() {
+    function render() 
+    {
         stats.update();
         orbitControls.update( clock.getDelta() );
+
+        renderer.render( scene, camera );
+        
         requestAnimationFrame( render );
-        renderer.render( scene, camera )
     }
 }
 
