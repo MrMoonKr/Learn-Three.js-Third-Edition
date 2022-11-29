@@ -1,31 +1,32 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import { initStats, initTrackballControls } from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
+
 
 function init() {
 
-    var stats = initStats();
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     // create a render and set the size
-    var renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor( new THREE.Color( 0x000000 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -44,12 +45,12 @@ function init() {
     camera.lookAt( scene.position );
 
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight( 0x3c3c3c );
+    const ambientLight = new THREE.AmbientLight( 0x3c3c3c );
     scene.add( ambientLight );
 
     // add spotlight for the shadows
     // add spotlight for the shadows
-    var spotLight = new THREE.SpotLight( 0xffffff, 1, 180, Math.PI / 4 );
+    const spotLight = new THREE.SpotLight( 0xffffff, 1, 180, Math.PI / 4 );
     spotLight.shadow.mapSize.height = 2048;
     spotLight.shadow.mapSize.width = 2048;
     spotLight.position.set( -40, 30, 30 );
@@ -60,9 +61,9 @@ function init() {
     document.getElementById( "webgl-output" ).appendChild( renderer.domElement );
 
     // call the render function
-    var step = 0;
+    let step = 0;
 
-    var controls = new function () {
+    const controls = new function () {
         this.scaleX = 1;
         this.scaleY = 1;
         this.scaleZ = 1;
@@ -95,10 +96,10 @@ function init() {
     };
 
 
-    var material = new THREE.MeshLambertMaterial( {
+    const material = new THREE.MeshLambertMaterial( {
         color: 0x44ff44
     } );
-    var geom = new THREE.BoxGeometry( 5, 8, 3 );
+    const geom = new THREE.BoxGeometry( 5, 8, 3 );
 
     // var materials = [
     //   new THREE.MeshLambertMaterial({opacity: 0.8, color: 0x44ff44, transparent: true}),
@@ -107,23 +108,23 @@ function init() {
 
     // var cube = THREE.SceneUtils.createMultiMaterialObject(geom, materials);
 
-    var cube = new THREE.Mesh( geom, material );
+    const cube = new THREE.Mesh( geom, material );
     cube.position.y = 4;
     cube.castShadow = true;
     scene.add( cube );
 
 
-    var gui = new dat.GUI();
+    const gui = new dat.GUI();
 
-    guiScale = gui.addFolder( 'scale' );
+    const guiScale = gui.addFolder( 'scale' );
     guiScale.add( controls, 'scaleX', 0, 5 );
     guiScale.add( controls, 'scaleY', 0, 5 );
     guiScale.add( controls, 'scaleZ', 0, 5 );
 
-    guiPosition = gui.addFolder( 'position' );
-    var contX = guiPosition.add( controls, 'positionX', -10, 10 );
-    var contY = guiPosition.add( controls, 'positionY', -4, 20 );
-    var contZ = guiPosition.add( controls, 'positionZ', -10, 10 );
+    const guiPosition = gui.addFolder( 'position' );
+    const contX = guiPosition.add( controls, 'positionX', -10, 10 );
+    const contY = guiPosition.add( controls, 'positionY', -4, 20 );
+    const contZ = guiPosition.add( controls, 'positionZ', -10, 10 );
 
     contX.listen();
     contX.onChange( function ( value ) {
@@ -142,13 +143,12 @@ function init() {
     } );
 
 
-    guiRotation = gui.addFolder( 'rotation' );
+    const guiRotation = gui.addFolder( 'rotation' );
     guiRotation.add( controls, 'rotationX', -4, 4 );
     guiRotation.add( controls, 'rotationY', -4, 4 );
     guiRotation.add( controls, 'rotationZ', -4, 4 );
 
-    guiTranslate = gui.addFolder( 'translate' );
-
+    const guiTranslate = gui.addFolder( 'translate' );
     guiTranslate.add( controls, 'translateX', -10, 10 );
     guiTranslate.add( controls, 'translateY', -10, 10 );
     guiTranslate.add( controls, 'translateZ', -10, 10 );
@@ -156,8 +156,8 @@ function init() {
 
     gui.add( controls, 'visible' );
 
-    var trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
     render();
 
@@ -171,11 +171,13 @@ function init() {
         cube.rotation.z = controls.rotationZ;
 
         cube.scale.set( controls.scaleX, controls.scaleY, controls.scaleZ );
-        requestAnimationFrame( render );
+
         renderer.render( scene, camera );
+
+        requestAnimationFrame( render );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

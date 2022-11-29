@@ -1,44 +1,42 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry' ;
-import { ParametricGeometries } from 'three/examples/jsm/geometries/ParametricGeometries' ;
-import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry' ;
-import * as SceneUtils from 'three/examples/jsm/utils/SceneUtils' ;
+import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry';
+import { ParametricGeometries } from 'three/examples/jsm/geometries/ParametricGeometries';
+import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry';
+import * as SceneUtils from 'three/examples/jsm/utils/SceneUtils';
 
 import * as Helper from '../../js/helper.js';
 
 const params = {
     'clear color': "#949494",
-    'ambient light' : "#949494",
-    'spot light' : "#FFFFFF"
+    'ambient light': "#949494",
+    'spot light': "#FFFFFF"
 }
 
 
-function init() 
-{
-
-    var stats = Helper.initStats();
+function init() {
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     // create a render and set the size
-    var renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor( new THREE.Color( 0x949494 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -57,11 +55,11 @@ function init()
     camera.lookAt( new THREE.Vector3( -10, 0, 0 ) );
 
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight( 0x555555 );
+    const ambientLight = new THREE.AmbientLight( 0x555555 );
     scene.add( ambientLight );
 
     // add spotlight for the shadows
-    var spotLight = new THREE.SpotLight( 0xffffff, 1.2, 150, Math.PI / 4, 0, 2 );
+    const spotLight = new THREE.SpotLight( 0xffffff, 1.2, 150, Math.PI / 4, 0, 2 );
     spotLight.shadow.mapSize.height = 1024;
     spotLight.shadow.mapSize.width = 1024;
     spotLight.position.set( -40, 30, 30 );
@@ -75,11 +73,11 @@ function init()
     document.getElementById( "webgl-output" ).appendChild( renderer.domElement );
 
     // call the render function
-    var step = 0;
+    let step = 0;
 
 
     function addGeometries( scene ) {
-        var geoms = [];
+        let geoms = [];
 
         geoms.push( new THREE.CylinderGeometry( 1, 4, 4 ) );
 
@@ -169,36 +167,35 @@ function init()
 
 
     //var trackballControls = Helper.initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     //const firstPersonCtrl = Helper.initFirstPersonControls( camera, renderer ) ;
-    const flyCtrl = Helper.initFlyControls( camera, renderer ) ;
+    const flyCtrl = Helper.initFlyControls( camera, renderer );
 
     const gui = new dat.GUI();
     gui.addColor( params, 'clear color' );
     gui.addColor( params, 'ambient light' );
-    gui.addColor( params, 'spot light');
+    gui.addColor( params, 'spot light' );
 
     render();
 
-    function render() 
-    {
+    function render() {
         //trackballControls.update( clock.getDelta() );
         //firstPersonCtrl.update( clock.getDelta() );
-        flyCtrl.update( clock.getDelta() ) ;
+        flyCtrl.update( clock.getDelta() );
         stats.update();
 
-        ambientLight.color.set( params['ambient light'] );
-        spotLight.color.set( params['spot light'] );
+        ambientLight.color.set( params[ 'ambient light' ] );
+        spotLight.color.set( params[ 'spot light' ] );
 
-        renderer.setClearColor( params['clear color'] );
+        renderer.setClearColor( params[ 'clear color' ] );
         renderer.render( scene, camera );
-        
+
         // render using requestAnimationFrame
         requestAnimationFrame( render );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

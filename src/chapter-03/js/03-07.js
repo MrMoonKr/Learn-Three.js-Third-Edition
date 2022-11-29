@@ -3,46 +3,41 @@ import * as dat from 'dat.gui';
 
 import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare' ;
 
-import {
-    initStats,
-    initTrackballControls,
-    initRenderer,
-    initCamera,
-} from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
 
 
 function init() {
 
 
-    var stats = initStats();
-    var renderer = initRenderer( {
+    const stats = Helper.initStats();
+    const renderer = Helper.initRenderer( {
         alpha: true
     } );
 
-    var camera = initCamera();
+    const camera = Helper.initCamera();
     camera.position.x = -20;
     camera.position.y = 10;
     camera.position.z = 45;
     camera.lookAt( new THREE.Vector3( 10, 0, 0 ) );
 
-    var trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create the ground plane
-    var textureGrass = new THREE.TextureLoader().load( "../../assets/textures/ground/grasslight-big.jpg" );
+    const textureGrass = new THREE.TextureLoader().load( "../../assets/textures/ground/grasslight-big.jpg" );
     textureGrass.wrapS = THREE.RepeatWrapping;
     textureGrass.wrapT = THREE.RepeatWrapping;
     textureGrass.repeat.set( 10, 10 );
 
-    var planeGeometry = new THREE.PlaneGeometry( 1000, 1000, 20, 20 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 1000, 1000, 20, 20 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         map: textureGrass
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -55,11 +50,11 @@ function init() {
     scene.add( plane );
 
     // create a cube
-    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
-    var cubeMaterial = new THREE.MeshLambertMaterial( {
+    const cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    const cubeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xff3333
     } );
-    var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.castShadow = true;
 
     // position the cube
@@ -70,11 +65,11 @@ function init() {
     // add the cube to the scene
     scene.add( cube );
 
-    var sphereGeometry = new THREE.SphereGeometry( 4, 25, 25 );
-    var sphereMaterial = new THREE.MeshLambertMaterial( {
+    const sphereGeometry = new THREE.SphereGeometry( 4, 25, 25 );
+    const sphereMaterial = new THREE.MeshLambertMaterial( {
         color: 0x7777ff
     } );
-    var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 
     // position the sphere
     sphere.position.x = 10;
@@ -86,25 +81,25 @@ function init() {
     scene.add( sphere );
 
     // add subtle ambient lighting
-    var ambiColor = "#1c1c1c";
-    var ambientLight = new THREE.AmbientLight( ambiColor );
+    const ambiColor = "#1c1c1c";
+    const ambientLight = new THREE.AmbientLight( ambiColor );
     scene.add( ambientLight );
 
     // add spotlight for a bit of light
-    var spotLight0 = new THREE.SpotLight( 0xcccccc );
+    const spotLight0 = new THREE.SpotLight( 0xcccccc );
     spotLight0.position.set( -40, 60, -10 );
     spotLight0.lookAt( plane );
     scene.add( spotLight0 );
 
 
-    var target = new THREE.Object3D();
+    const target = new THREE.Object3D();
     //target.position = new THREE.Vector3( 5, 0, 0 );
     target.position.set( 5, 0, 0 );
 
 
-    var pointColor = "#ffffff";
+    const pointColor = "#ffffff";
     //    var spotLight = new THREE.SpotLight( pointColor);
-    var spotLight = new THREE.DirectionalLight( pointColor );
+    const spotLight = new THREE.DirectionalLight( pointColor );
     spotLight.position.set( 30, 10, -50 );
     spotLight.castShadow = true;
     spotLight.shadowCameraNear = 0.1;
@@ -132,7 +127,7 @@ function init() {
     var invert = 1;
     var phase = 0;
 
-    var controls = new function () {
+    const controls = new function () {
         this.rotationSpeed = 0.03;
         this.bouncingSpeed = 0.03;
         this.ambientColor = ambiColor;
@@ -148,7 +143,7 @@ function init() {
 
     };
 
-    var gui = new dat.GUI();
+    const gui = new dat.GUI();
     gui.addColor( controls, 'ambientColor' ).onChange( function ( e ) {
         ambientLight.color = new THREE.Color( e );
     } );
@@ -165,15 +160,15 @@ function init() {
     var textureFlare0 = THREE.ImageUtils.loadTexture( "../../assets/textures/flares/lensflare0.png" );
     var textureFlare3 = THREE.ImageUtils.loadTexture( "../../assets/textures/flares/lensflare3.png" );
     */
-    
-    const textureLoader = new THREE.TextureLoader();
-    var textureFlare0 = textureLoader.load( "../../assets/textures/flares/lensflare0.png" );
-    var textureFlare3 = textureLoader.load( "../../assets/textures/flares/lensflare3.png" );
 
-    var flareColor = new THREE.Color( 0xffaacc );
+    const textureLoader = new THREE.TextureLoader();
+    const textureFlare0 = textureLoader.load( "../../assets/textures/flares/lensflare0.png" );
+    const textureFlare3 = textureLoader.load( "../../assets/textures/flares/lensflare3.png" );
+
+    const flareColor = new THREE.Color( 0xffaacc );
 
     // var lensFlare = new THREE.Lensflare();
-    var lensFlare = new Lensflare();
+    const lensFlare = new Lensflare();
 
     /*
     lensFlare.addElement( new THREE.LensflareElement( textureFlare0, 350, 0.0, flareColor ) );
@@ -205,11 +200,12 @@ function init() {
         sphere.position.x = 20 + ( 10 * ( Math.cos( step ) ) );
         sphere.position.y = 2 + ( 10 * Math.abs( Math.sin( step ) ) );
 
-        requestAnimationFrame( render );
         renderer.render( scene, camera );
+
+        requestAnimationFrame( render );
     }
 };
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

@@ -1,33 +1,34 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import { initStats, initTrackballControls } from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
+
 
 function init() {
 
-    var stats = initStats();
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.x = 120;
     camera.position.y = 60;
     camera.position.z = 180;
 
     // create a render and set the size
-    var renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor( new THREE.Color( 0x000000 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 180, 180 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 180, 180 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
 
     // rotate and position the plane
@@ -39,7 +40,7 @@ function init() {
     // add the plane to the scene
     scene.add( plane );
 
-    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    const cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
 
     for ( var j = 0; j < ( planeGeometry.parameters.height / 5 ); j++ ) {
         for ( var i = 0; i < planeGeometry.parameters.width / 5; i++ ) {
@@ -57,23 +58,23 @@ function init() {
     }
 
 
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
     directionalLight.position.set( -20, 40, 60 );
     scene.add( directionalLight );
 
 
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight( 0x292929 );
+    const ambientLight = new THREE.AmbientLight( 0x292929 );
     scene.add( ambientLight );
 
     // add the output of the renderer to the html element
     document.getElementById( "webgl-output" ).appendChild( renderer.domElement );
 
     // call the render function
-    var step = 0;
+    let step = 0;
 
-    var trackballControls
-    var controls = new function () {
+    let trackballControls;
+    const controls = new function () {
         this.perspective = "Perspective";
         this.switchCamera = function () {
             if ( camera instanceof THREE.PerspectiveCamera ) {
@@ -100,7 +101,7 @@ function init() {
         };
     };
 
-    var gui = new dat.GUI();
+    const gui = new dat.GUI();
     gui.add( controls, 'switchCamera' );
     gui.add( controls, 'perspective' ).listen();
 
@@ -108,8 +109,8 @@ function init() {
     // camera is looking at the scene
     camera.lookAt( scene.position );
 
-    trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
     render();
 
@@ -117,12 +118,13 @@ function init() {
         trackballControls.update( clock.getDelta() );
         stats.update();
 
+        renderer.render( scene, camera );
+
         // render using requestAnimationFrame
         requestAnimationFrame( render );
-        renderer.render( scene, camera );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

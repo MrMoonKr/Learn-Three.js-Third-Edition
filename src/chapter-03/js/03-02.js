@@ -1,51 +1,44 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import {
-    initStats,
-    initTrackballControls,
-    initRenderer,
-    initCamera,
-    addDefaultCubeAndSphere,
-    addGroundPlane
-} from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
 
 
 function init() {
 
     // use the defaults
-    var stats = initStats();
-    var renderer = initRenderer();
-    var camera = initCamera();
+    const stats = Helper.initStats();
+    const renderer = Helper.initRenderer();
+    const camera = Helper.initCamera();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
-    var cubeAndSphere = addDefaultCubeAndSphere( scene );
-    var cube = cubeAndSphere.cube;
-    var sphere = cubeAndSphere.sphere;
-    var plane = addGroundPlane( scene );
+    const cubeAndSphere = Helper.addDefaultCubeAndSphere( scene );
+    const cube = cubeAndSphere.cube;
+    const sphere = cubeAndSphere.sphere;
+    const plane = Helper.addGroundPlane( scene );
 
 
     // add subtle ambient lighting
-    var ambiColor = "#1c1c1c";
-    var ambientLight = new THREE.AmbientLight( ambiColor );
+    const ambiColor = "#1c1c1c";
+    const ambientLight = new THREE.AmbientLight( ambiColor );
     scene.add( ambientLight );
 
     // add spotlight for a bit of light
-    var spotLight0 = new THREE.SpotLight( 0xcccccc );
+    const spotLight0 = new THREE.SpotLight( 0xcccccc );
     spotLight0.position.set( -40, 30, -10 );
     spotLight0.lookAt( plane );
     scene.add( spotLight0 );
 
     // add target and light
-    var target = new THREE.Object3D();
+    const target = new THREE.Object3D();
     //target.position = new THREE.Vector3( 5, 0, 0 );
-    target.position.x = 5 ;
-    target.position.y = 0 ;
-    target.position.z = 0 ;
+    target.position.x = 5;
+    target.position.y = 0;
+    target.position.z = 0;
 
-    var spotLight = new THREE.SpotLight( "#ffffff" );
+    const spotLight = new THREE.SpotLight( "#ffffff" );
     spotLight.position.set( -40, 60, -10 );
     spotLight.castShadow = true;
     spotLight.shadow.camera.near = 1;
@@ -55,23 +48,23 @@ function init() {
     spotLight.angle = 0.4;
     spotLight.shadow.camera.fov = 120;
     scene.add( spotLight );
-    var debugCamera = new THREE.CameraHelper( spotLight.shadow.camera );
+    const debugCamera = new THREE.CameraHelper( spotLight.shadow.camera );
 
-    var pp = new THREE.SpotLightHelper( spotLight )
+    const pp = new THREE.SpotLightHelper( spotLight )
     scene.add( pp )
 
     // add a small sphere simulating the pointlight
-    var sphereLight = new THREE.SphereGeometry( 0.2 );
-    var sphereLightMaterial = new THREE.MeshBasicMaterial( {
+    const sphereLight = new THREE.SphereGeometry( 0.2 );
+    const sphereLightMaterial = new THREE.MeshBasicMaterial( {
         color: 0xac6c25
     } );
-    var sphereLightMesh = new THREE.Mesh( sphereLight, sphereLightMaterial );
+    const sphereLightMesh = new THREE.Mesh( sphereLight, sphereLightMaterial );
     sphereLightMesh.castShadow = true;
 
     //sphereLightMesh.position = new THREE.Vector3( 3, 20, 3 );
-    sphereLightMesh.position.x = 3 ;
-    sphereLightMesh.position.y = 20 ;
-    sphereLightMesh.position.z = 3 ;
+    sphereLightMesh.position.x = 3;
+    sphereLightMesh.position.y = 20;
+    sphereLightMesh.position.z = 3;
     scene.add( sphereLightMesh );
 
     // for controlling the rendering
@@ -79,7 +72,7 @@ function init() {
     var invert = 1;
     var phase = 0;
 
-    var controls = setupControls();
+    const controls = setupControls();
     render();
 
     function render() {
@@ -115,13 +108,15 @@ function init() {
         }
 
         pp.update();
+
+        renderer.render( scene, camera );
+
         // render using requestAnimationFrame
         requestAnimationFrame( render );
-        renderer.render( scene, camera );
     }
 
     function setupControls() {
-        var controls = new function () {
+        const controls = new function () {
             this.rotationSpeed = 0.03;
             this.bouncingSpeed = 0.03;
             this.ambientColor = ambiColor;
@@ -136,7 +131,7 @@ function init() {
             this.penumbra = 0;
         };
 
-        var gui = new dat.GUI();
+        const gui = new dat.GUI();
         gui.addColor( controls, 'ambientColor' ).onChange( function ( e ) {
             ambientLight.color = new THREE.Color( e );
         } );
@@ -197,6 +192,6 @@ function init() {
 
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

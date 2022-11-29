@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import { initStats, initTrackballControls } from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
 
 
 const params = {
@@ -10,29 +10,29 @@ const params = {
 
 function init() {
 
-    var stats = initStats();
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.x = 120;
     camera.position.y = 60;
     camera.position.z = 180;
 
     // create a render and set the size
-    var renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor( new THREE.Color( 0x000000 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 180, 180 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 180, 180 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
 
 
     // rotate and position the plane
@@ -44,7 +44,7 @@ function init() {
     // add the plane to the scene
     scene.add( plane );
 
-    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    const cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
     for ( var j = 0; j < ( planeGeometry.parameters.height / 5 ); j++ ) {
         for ( var i = 0; i < planeGeometry.parameters.width / 5; i++ ) {
             var rnd = Math.random() * 0.75 + 0.25;
@@ -60,32 +60,30 @@ function init() {
         }
     }
 
-    var lookAtGeom = new THREE.SphereGeometry( 2 );
-    var lookAtMesh = new THREE.Mesh( lookAtGeom, new THREE.MeshLambertMaterial( {
+    const lookAtGeom = new THREE.SphereGeometry( 2 );
+    const lookAtMesh = new THREE.Mesh( lookAtGeom, new THREE.MeshLambertMaterial( {
         color: 0x00ff00
     } ) );
     scene.add( lookAtMesh );
 
 
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
+    const directionalLight = new THREE.DirectionalLight( 0xffffff, 0.7 );
     directionalLight.position.set( -20, 40, 60 );
     scene.add( directionalLight );
 
 
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight( 0x292929 );
+    const ambientLight = new THREE.AmbientLight( 0x292929 );
     scene.add( ambientLight );
 
     // add the output of the renderer to the html element
     document.getElementById( "webgl-output" ).appendChild( renderer.domElement );
 
-    // call the render function
-    var step = 0;
-
-    var controls = new function () {
+    const controls = new function () {
         this.perspective = "Perspective";
         this.switchCamera = function () {
-            if ( camera instanceof THREE.PerspectiveCamera ) {
+            if ( camera instanceof THREE.PerspectiveCamera ) 
+            {
                 camera = new THREE.OrthographicCamera( window.innerWidth / -16, window.innerWidth / 16, window.innerHeight / 16, window.innerHeight / -16, -200, 500 );
                 camera.position.x = 120;
                 camera.position.y = 60;
@@ -93,7 +91,9 @@ function init() {
 
                 camera.lookAt( scene.position );
                 this.perspective = "Orthographic";
-            } else {
+            } 
+            else 
+            {
                 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
                 camera.position.x = 120;
                 camera.position.y = 60;
@@ -105,18 +105,18 @@ function init() {
         };
     };
 
-    var gui = new dat.GUI();
-    gui.add( controls, 'switchCamera' );
+    const gui = new dat.GUI();
     gui.add( controls, 'perspective' ).listen();
+    gui.add( controls, 'switchCamera' );
 
     // make sure that for the first time, the
     // camera is looking at the scene
     //   camera.lookAt(scene.position);
+    
+    
+    let step = 0;
+    
     render();
-
-
-    var step = 0;
-
     function render() {
 
         stats.update();
@@ -129,11 +129,12 @@ function init() {
         }
 
         //        .position.x = 20+( 10*(Math.cos(step)));
-        requestAnimationFrame( render );
         renderer.render( scene, camera );
+
+        requestAnimationFrame( render );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

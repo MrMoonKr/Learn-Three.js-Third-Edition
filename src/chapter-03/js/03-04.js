@@ -1,34 +1,29 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import {
-    initStats,
-    initTrackballControls,
-    initRenderer,
-    initCamera,
-} from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
 
 
 function init() {
 
     // use the defaults
-    var stats = initStats();
-    var renderer = initRenderer();
-    var camera = initCamera();
+    const stats = Helper.initStats();
+    const renderer = Helper.initRenderer();
+    const camera = Helper.initCamera();
     camera.position.set( -80, 80, 80 );
-    var trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 600, 200, 20, 20 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 600, 200, 20, 20 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -41,11 +36,11 @@ function init() {
     scene.add( plane );
 
     // create a cube
-    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
-    var cubeMaterial = new THREE.MeshLambertMaterial( {
+    const cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    const cubeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xff3333
     } );
-    var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.castShadow = true;
 
     // position the cube
@@ -56,11 +51,11 @@ function init() {
     // add the cube to the scene
     scene.add( cube );
 
-    var sphereGeometry = new THREE.SphereGeometry( 4, 20, 20 );
-    var sphereMaterial = new THREE.MeshLambertMaterial( {
+    const sphereGeometry = new THREE.SphereGeometry( 4, 20, 20 );
+    const sphereMaterial = new THREE.MeshLambertMaterial( {
         color: 0x7777ff
     } );
-    var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 
     // position the sphere
     sphere.position.x = 20;
@@ -72,18 +67,18 @@ function init() {
     scene.add( sphere );
 
     // add subtle ambient lighting
-    var ambiColor = "#1c1c1c";
-    var ambientLight = new THREE.AmbientLight( ambiColor );
+    const ambiColor = "#1c1c1c";
+    const ambientLight = new THREE.AmbientLight( ambiColor );
     scene.add( ambientLight );
 
-    var target = new THREE.Object3D();
+    const target = new THREE.Object3D();
     //target.position = new THREE.Vector3( 5, 0, 0 );
-    target.position.x = 5 ;
-    target.position.y = 0 ;
-    target.position.z = 0 ;
+    target.position.x = 5;
+    target.position.y = 0;
+    target.position.z = 0;
 
-    var pointColor = "#ff5808";
-    var directionalLight = new THREE.DirectionalLight( pointColor );
+    const pointColor = "#ff5808";
+    const directionalLight = new THREE.DirectionalLight( pointColor );
     directionalLight.position.set( -40, 60, -10 );
     directionalLight.castShadow = true;
     directionalLight.shadow.camera.near = 2;
@@ -98,14 +93,14 @@ function init() {
     directionalLight.shadow.mapSize.height = 1024;
 
     scene.add( directionalLight );
-    var shadowCamera = new THREE.CameraHelper( directionalLight.shadow.camera )
+    const shadowCamera = new THREE.CameraHelper( directionalLight.shadow.camera )
 
     // add a small sphere simulating the pointlight
-    var sphereLight = new THREE.SphereGeometry( 0.2 );
-    var sphereLightMaterial = new THREE.MeshBasicMaterial( {
+    const sphereLight = new THREE.SphereGeometry( 0.2 );
+    const sphereLightMaterial = new THREE.MeshBasicMaterial( {
         color: 0xac6c25
     } );
-    var sphereLightMesh = new THREE.Mesh( sphereLight, sphereLightMaterial );
+    const sphereLightMesh = new THREE.Mesh( sphereLight, sphereLightMaterial );
     sphereLightMesh.castShadow = true;
 
     //sphereLightMesh.position = new THREE.Vector3( 3, 20, 3 );
@@ -116,7 +111,7 @@ function init() {
     var invert = 1;
     var phase = 0;
 
-    var controls = new function () {
+    const controls = new function () {
         this.rotationSpeed = 0.03;
         this.bouncingSpeed = 0.03;
         this.ambientColor = ambiColor;
@@ -129,7 +124,7 @@ function init() {
 
     };
 
-    var gui = new dat.GUI();
+    const gui = new dat.GUI();
 
     gui.addColor( controls, 'ambientColor' ).onChange( function ( e ) {
         ambientLight.color = new THREE.Color( e );
@@ -194,14 +189,13 @@ function init() {
 
         directionalLight.position.copy( sphereLightMesh.position );
 
+        renderer.render( scene, camera );
+
         // render using requestAnimationFrame
         requestAnimationFrame( render );
-
-
-        renderer.render( scene, camera );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

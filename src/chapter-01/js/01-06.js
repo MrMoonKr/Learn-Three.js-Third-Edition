@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import * as Helpers from '../../js/helper.js' ;
+import * as Helper from '../../js/helper.js' ;
+
 
 function init() {
     window.addEventListener( 'resize', onWindowResize, false ); // 창크기 조절 이벤트 처리 콜백 등록
@@ -11,7 +12,7 @@ function init() {
     //var renderer;
 
     // create stats
-    const stats = Helpers.initStats();
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
@@ -26,7 +27,7 @@ function init() {
     renderer.shadowMap.enabled = true;
 
     // initialize the trackball controls and the clock which is needed
-    const trackballControls = Helpers.initTrackballControls( camera, renderer );
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
 
     const clock = new THREE.Clock();
 

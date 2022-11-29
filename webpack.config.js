@@ -17,7 +17,7 @@ module.exports = {
         '02-03': './src/chapter-02/js/02-03.js',
         '02-04': './src/chapter-02/js/02-04.js',
         '02-05': './src/chapter-02/js/02-05.js',
-        '02-06': './src/chapter-02/js/02-08.js',
+        '02-06': './src/chapter-02/js/02-06.js',
         '02-07': './src/chapter-02/js/02-07.js',
         '02-08': './src/chapter-02/js/02-08.js',
         

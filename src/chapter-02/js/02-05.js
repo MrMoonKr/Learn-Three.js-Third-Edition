@@ -3,31 +3,32 @@ import * as dat from 'dat.gui';
 
 import * as SceneUtils from 'three/examples/jsm/utils/SceneUtils' ;
 
-import { initStats, initTrackballControls } from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
+
 
 function init() {
 
-    var stats = initStats();
+    const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create a camera, which defines where we're looking at.
-    var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
     // create a render and set the size
-    var renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor( new THREE.Color( 0x000000 ) );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.shadowMap.enabled = true;
 
     // create the ground plane
-    var planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 60, 40, 1, 1 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xffffff
     } );
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -46,14 +47,14 @@ function init() {
     camera.lookAt( new THREE.Vector3( 5, 0, 0 ) );
 
     // add subtle ambient lighting
-    var ambientLight = new THREE.AmbientLight( 0x494949 );
+    const ambientLight = new THREE.AmbientLight( 0x494949 );
     scene.add( ambientLight );
 
     // add the output of the renderer to the html element
     document.getElementById( "webgl-output" ).appendChild( renderer.domElement );
 
     // call the render function
-    var step = 0;
+    let step = 0;
 
 
     // var vertices = [
@@ -86,7 +87,7 @@ function init() {
     // geom.vertices = vertices;
     // geom.faces = faces;
     // geom.computeFaceNormals();
-    
+
     const geom = new THREE.BufferGeometry();
 
     const indices = [];
@@ -150,7 +151,7 @@ function init() {
     geom.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
     geom.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
 
-    var materials = [
+    const materials = [
         new THREE.MeshBasicMaterial( {
             color: 0x000000,
             wireframe: true
@@ -162,7 +163,7 @@ function init() {
         } )
     ];
 
-    var mesh = SceneUtils.createMultiMaterialObject( geom, materials );
+    const mesh = SceneUtils.createMultiMaterialObject( geom, materials );
     mesh.castShadow = true;
     mesh.children.forEach( function ( e ) {
         e.castShadow = true
@@ -171,7 +172,7 @@ function init() {
     scene.add( mesh );
 
     // add spotlight for the shadows
-    var spotLight = new THREE.SpotLight( 0xffffff, 1, 180, Math.PI / 4 );
+    const spotLight = new THREE.SpotLight( 0xffffff, 1, 180, Math.PI / 4 );
     spotLight.shadow.mapSize.height = 2048;
     spotLight.shadow.mapSize.width = 2048;
     spotLight.position.set( -40, 30, 30 );
@@ -189,7 +190,7 @@ function init() {
         return controls;
     }
 
-    var controlPoints = [];
+    const controlPoints = [];
     controlPoints.push( addControl( 3, 5, 3 ) );
     controlPoints.push( addControl( 3, 5, 0 ) );
     controlPoints.push( addControl( 3, 0, 3 ) );
@@ -199,7 +200,7 @@ function init() {
     controlPoints.push( addControl( 0, 0, 0 ) );
     controlPoints.push( addControl( 0, 0, 3 ) );
 
-    var gui = new dat.GUI();
+    const gui = new dat.GUI();
     gui.add( new function () {
         this.clone = function () {
 
@@ -240,8 +241,8 @@ function init() {
 
     }
 
-    var trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
     render();
 
@@ -261,12 +262,13 @@ function init() {
             //delete e.geometry.__directGeometry
         } );
 
+        renderer.render( scene, camera );
+
         // render using requestAnimationFrame
         requestAnimationFrame( render );
-        renderer.render( scene, camera );
     }
 }
 
-window.addEventListener( 'load' , () => {
-    init() ;
-} ) ;
+window.addEventListener( 'load', () => {
+    init();
+} );

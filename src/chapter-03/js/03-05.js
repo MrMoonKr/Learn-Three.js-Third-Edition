@@ -1,39 +1,34 @@
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
-import {
-    initStats,
-    initTrackballControls,
-    initRenderer,
-    initCamera,
-} from '../../js/helper.js';
+import * as Helper from '../../js/helper.js';
 
 
 function init() {
 
-    var stats = initStats();
-    var renderer = initRenderer();
-    var camera = initCamera();
+    const stats = Helper.initStats();
+    const renderer = Helper.initRenderer();
+    const camera = Helper.initCamera();
 
-    var trackballControls = initTrackballControls( camera, renderer );
-    var clock = new THREE.Clock();
+    const trackballControls = Helper.initTrackballControls( camera, renderer );
+    const clock = new THREE.Clock();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     // create the ground plane
-    var textureGrass = new THREE.TextureLoader().load( "../../assets/textures/ground/grasslight-big.jpg" );
+    const textureGrass = new THREE.TextureLoader().load( "../../assets/textures/ground/grasslight-big.jpg" );
     textureGrass.wrapS = THREE.RepeatWrapping;
     textureGrass.wrapT = THREE.RepeatWrapping;
     textureGrass.repeat.set( 10, 10 );
 
-    var planeGeometry = new THREE.PlaneGeometry( 1000, 1000, 20, 20 );
-    var planeMaterial = new THREE.MeshLambertMaterial( {
+    const planeGeometry = new THREE.PlaneGeometry( 1000, 1000, 20, 20 );
+    const planeMaterial = new THREE.MeshLambertMaterial( {
         map: textureGrass
     } );
 
     //        var planeMaterial = new THREE.MeshLambertMaterial();
-    var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+    const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     plane.receiveShadow = true;
 
     // rotate and position the plane
@@ -46,11 +41,11 @@ function init() {
     scene.add( plane );
 
     // create a cube
-    var cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
-    var cubeMaterial = new THREE.MeshLambertMaterial( {
+    const cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    const cubeMaterial = new THREE.MeshLambertMaterial( {
         color: 0xff3333
     } );
-    var cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    const cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
     cube.castShadow = true;
 
     // position the cube
@@ -61,11 +56,11 @@ function init() {
     // add the cube to the scene
     scene.add( cube );
 
-    var sphereGeometry = new THREE.SphereGeometry( 4, 25, 25 );
-    var sphereMaterial = new THREE.MeshPhongMaterial( {
+    const sphereGeometry = new THREE.SphereGeometry( 4, 25, 25 );
+    const sphereMaterial = new THREE.MeshPhongMaterial( {
         color: 0x7777ff
     } );
-    var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
 
     // position the sphere
     sphere.position.x = 10;
@@ -77,21 +72,21 @@ function init() {
     scene.add( sphere );
 
     // add spotlight for a bit of light
-    var spotLight0 = new THREE.SpotLight( 0xcccccc );
+    const spotLight0 = new THREE.SpotLight( 0xcccccc );
     spotLight0.position.set( -40, 60, -10 );
     spotLight0.lookAt( plane );
     scene.add( spotLight0 );
 
-    var target = new THREE.Object3D();
+    const target = new THREE.Object3D();
     //target.position = new THREE.Vector3( 5, 0, 0 );
     target.position.set(  5, 0, 0 );
 
-    var hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.6 );
+    const hemiLight = new THREE.HemisphereLight( 0x0000ff, 0x00ff00, 0.6 );
     hemiLight.position.set( 0, 500, 0 );
     scene.add( hemiLight );
 
-    var pointColor = "#ffffff";
-    var dirLight = new THREE.DirectionalLight( pointColor );
+    const pointColor = "#ffffff";
+    const dirLight = new THREE.DirectionalLight( pointColor );
     dirLight.position.set( 30, 10, -50 );
     dirLight.castShadow = true;
     dirLight.target = plane;
@@ -111,9 +106,7 @@ function init() {
     // used to determine the switch point for the light animation
     var invert = 1;
     var phase = 0;
-    var controls = addControls();
-
-
+    const controls = addControls();
 
     render();
 
@@ -132,12 +125,13 @@ function init() {
         sphere.position.x = 20 + ( 10 * ( Math.cos( step ) ) );
         sphere.position.y = 2 + ( 10 * Math.abs( Math.sin( step ) ) );
 
-        requestAnimationFrame( render );
         renderer.render( scene, camera );
+
+        requestAnimationFrame( render );
     }
 
     function addControls() {
-        var controls = new function () {
+        const controls = new function () {
             this.rotationSpeed = 0.03;
             this.bouncingSpeed = 0.03;
             this.hemisphere = true;
@@ -147,7 +141,7 @@ function init() {
 
         };
 
-        var gui = new dat.GUI();
+        const gui = new dat.GUI();
 
         gui.add( controls, 'hemisphere' ).onChange( function ( e ) {
 
