@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import * as dat from 'dat.gui';
 import chroma from 'chroma-js';
 
-import { OBJLoader } from 'three/examples/jsm/loaders/objloader.js';
-import { TrackballControls } from 'three/examples/jsm/controls/trackballcontrols.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 
 import * as Helper from '../../js/helper.js';
 import { setRandomColors } from './util.js' ;
