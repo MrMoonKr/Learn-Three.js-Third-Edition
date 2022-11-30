@@ -19,8 +19,8 @@ let controls ;
 /** @type {OrbitControllerGizmo} */
 let controlsGizmo ;
 
-init();
-animate();
+//init();
+//animate();
 
 function init() {
 
@@ -43,6 +43,7 @@ function init() {
 
     // Orbit Controls
     controls = new OrbitController( camera, renderer.domElement );
+    controls.listenToKeyEvents( window.document );
 
     // Obit Controls Gizmo
     controlsGizmo = new OrbitControllerGizmo( controls, {
@@ -90,20 +91,30 @@ function init() {
     gui.add( controlsGizmo, 'lockX' ).name( "Lock Gizmo's X Axis" );
     gui.add( controlsGizmo, 'lockY' ).name( "Lock Gizmo's Y Axis" );
 
+    animate();
 }
 
 function animate() {
 
-    requestAnimationFrame( animate );
-    renderer.render( scene, camera );
     controls.update();
+
+    renderer.render( scene, camera );
+
+    requestAnimationFrame( animate );
 
 }
 
-function resize() {
+function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     camera.aspect = ( window.innerWidth / window.innerHeight );
     camera.updateProjectionMatrix();
 }
 
-window.onresize = resize;
+//window.onresize = resize;
+
+window.addEventListener( 'load' , () => 
+{
+    init() ;
+
+    window.addEventListener( 'resize', onWindowResize ) ;
+} ) ;

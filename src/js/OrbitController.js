@@ -1,3 +1,5 @@
+import { OrthographicCamera } from 'three';
+import { PerspectiveCamera } from 'three';
 import {
 	EventDispatcher,
 	MOUSE,
@@ -39,6 +41,7 @@ class OrbitController extends EventDispatcher {
 		if ( domElement === undefined ) console.warn( 'THREE.OrbitControls: The second parameter "domElement" is now mandatory.' );
 		if ( domElement === document ) console.error( 'THREE.OrbitControls: "document" should not be used as the target "domElement". Please use "renderer.domElement" instead.' );
 
+        /** @type {PerspectiveCamera} */
 		this.object = object;
 		this.domElement = domElement;
 
@@ -124,6 +127,10 @@ class OrbitController extends EventDispatcher {
 
 		};
 
+        /**
+         * 'keydown' 이벤트 핸들러 등록
+         * @param {HTMLCanvasElement} domElement 
+         */
 		this.listenToKeyEvents = function ( domElement ) {
 
 			domElement.addEventListener( 'keydown', onKeyDown );
@@ -385,9 +392,9 @@ class OrbitController extends EventDispatcher {
 
 		}
 
-    // Exposing rotateLeft and rotateUp
-    this.rotateLeft = rotateLeft;
-    this.rotateUp = rotateUp;
+        // Exposing rotateLeft and rotateUp
+        this.rotateLeft = rotateLeft;
+        this.rotateUp = rotateUp;
 
 		const panLeft = function () {
 
@@ -396,7 +403,7 @@ class OrbitController extends EventDispatcher {
 			return function panLeft( distance, objectMatrix ) {
 
 				v.setFromMatrixColumn( objectMatrix, 0 ); // get X column of objectMatrix
-				v.multiplyScalar( - distance );
+				v.multiplyScalar( -distance );
 
 				panOffset.add( v );
 
@@ -528,6 +535,10 @@ class OrbitController extends EventDispatcher {
 
 		}
 
+        /**
+         * 
+         * @param {PointerEvent} event 
+         */
 		function handleMouseDownPan( event ) {
 
 			panStart.set( event.clientX, event.clientY );
@@ -574,6 +585,10 @@ class OrbitController extends EventDispatcher {
 
 		}
 
+        /**
+         * 
+         * @param {PointerEvent} event 
+         */
 		function handleMouseMovePan( event ) {
 
 			panEnd.set( event.clientX, event.clientY );
@@ -588,8 +603,13 @@ class OrbitController extends EventDispatcher {
 
 		}
 
-		function handleMouseUp( /*event*/ ) {
+        /**
+         * 
+         * @param {PointerEvent} event 
+         */
+		function handleMouseUp( event ) {
 
+            event = event ;
 			// no-op
 
 		}
@@ -610,6 +630,10 @@ class OrbitController extends EventDispatcher {
 
 		}
 
+        /**
+         * 
+         * @param {KeyboardEvent} event 
+         */
 		function handleKeyDown( event ) {
 
 			let needsUpdate = false;
@@ -804,6 +828,12 @@ class OrbitController extends EventDispatcher {
 		// event handlers - FSM: listen for events and reset state
 		//
 
+        /**
+         * 'pointerdown' 이벤트 핸들러.  
+         * this.onMouseDown() 메소드로 이벤트 전달.  
+         * @param {PointerEvent} event 
+         * @returns 
+         */
 		function onPointerDown( event ) {
 
 			if ( scope.enabled === false ) return;
@@ -818,9 +848,14 @@ class OrbitController extends EventDispatcher {
 				// TODO touch
 
 			}
-
 		}
 
+        /**
+         * 'pointermove' 이벤트 핸들러.  
+         * this.onMouseMove() 메소드로 이벤트 전달.
+         * @param {PointerEvent} event 
+         * @returns 
+         */
 		function onPointerMove( event ) {
 
 			if ( scope.enabled === false ) return;
@@ -835,9 +870,13 @@ class OrbitController extends EventDispatcher {
 				// TODO touch
 
 			}
-
 		}
 
+        /**
+         * 'pointerup' 이벤트 핸들러.  
+         * this.onMouseUp() 메소드로 이벤트 전달.
+         * @param {PointerEvent} event 
+         */
 		function onPointerUp( event ) {
 
 			switch ( event.pointerType ) {
@@ -850,9 +889,13 @@ class OrbitController extends EventDispatcher {
 				// TODO touch
 
 			}
-
 		}
 
+        /**
+         * 
+         * @param {PointerEvent} event 
+         * @returns 
+         */
 		function onMouseDown( event ) {
 
 			// Prevent the browser from scrolling.
@@ -1004,7 +1047,7 @@ class OrbitController extends EventDispatcher {
 
 			if ( scope.enabled === false ) return;
 
-			//handleMouseUp( event );
+			handleMouseUp( event );
 
 			scope.dispatchEvent( _endEvent );
 
@@ -1026,7 +1069,15 @@ class OrbitController extends EventDispatcher {
 
 		}
 
+        /**
+         * 'keydown' 이벤트 핸들러.  
+         * this.handleKeyDown() 메소드로 이벤트 전달.  
+         * @param {KeyboardEvent} event 
+         * @returns 
+         */
 		function onKeyDown( event ) {
+
+			console.log( `[i] onKeyDown : ${event.key}, ${event.code}, ${event.keyCode}` );
 
 			if ( scope.enabled === false || scope.enablePan === false ) return;
 
