@@ -76,6 +76,7 @@ module.exports = {
         
         '13-01': './src/chapter-13/js/13-01.js',
         '13-02': './src/chapter-13/js/13-02.js',
+        '13-04': './src/chapter-13/js/13-04.js',
 
     },
 
