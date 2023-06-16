@@ -24,7 +24,7 @@
         "chroma-js": "^2.4.2",
         "dat.gui": "^0.7.9",
         "stats.js": "^0.17.0",
-        "three": "^0.146.0"
+        "three": "^0.153.0"
     },
     "devDependencies": {
         "webpack": "^5.75.0",
