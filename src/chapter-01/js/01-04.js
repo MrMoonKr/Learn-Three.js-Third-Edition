@@ -17,7 +17,8 @@ function initStats(type) {
 
 import * as Helpers from '../../js/helper.js';
 
-function init() {
+function init()
+{
     const stats = Helpers.initStats();
 
     // default setup

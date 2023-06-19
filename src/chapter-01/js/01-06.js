@@ -4,7 +4,8 @@ import * as dat from 'dat.gui';
 import * as Helper from '../../js/helper.js' ;
 
 
-function init() {
+function init()
+{
     window.addEventListener( 'resize', onWindowResize, false ); // 창크기 조절 이벤트 처리 콜백 등록
 
     //var camera;

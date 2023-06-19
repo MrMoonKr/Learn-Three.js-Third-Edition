@@ -4,7 +4,8 @@ import * as dat from 'dat.gui';
 import * as Helper from '../../js/helper.js' ;
 
 
-function init() {
+function init()
+{
     const stats = Helper.initStats();
 
     // create a scene, that will hold all our elements such as objects, cameras and lights.

@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 
 
-function init() {
+function init() 
+{
     // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
 
@@ -92,7 +93,8 @@ function init() {
     renderer.render( scene, camera );
 }
 
-function createBoundingWall( scene ) {
+function createBoundingWall( scene )
+{
     const wallLeft = new THREE.BoxGeometry( 70, 2, 2 );
     const wallRight = new THREE.BoxGeometry( 70, 2, 2 );
     const wallTop = new THREE.BoxGeometry( 2, 2, 50 );
@@ -119,7 +121,8 @@ function createBoundingWall( scene ) {
 
 }
 
-function createGroundPlane( scene ) {
+function createGroundPlane( scene )
+{
     // create the ground plane
     const planeGeometry = new THREE.PlaneGeometry( 70, 50 );
     const planeMaterial = new THREE.MeshLambertMaterial( {
@@ -137,7 +140,8 @@ function createGroundPlane( scene ) {
     scene.add( plane )
 }
 
-function createHouse( scene ) {
+function createHouse( scene )
+{
     const roof = new THREE.ConeGeometry( 5, 4 );
     const base = new THREE.CylinderGeometry( 5, 5, 6 );
 
@@ -165,7 +169,8 @@ function createHouse( scene ) {
  * Add the tree to the scene
  * @param scene The scene to add the tree to
  */
-function createTree( scene ) {
+function createTree( scene )
+{
     //const trunk = new THREE.CubeGeometry( 1, 8, 1 );
     const trunk = new THREE.BoxGeometry( 1, 8, 1 );
     const leaves = new THREE.SphereGeometry( 4 );

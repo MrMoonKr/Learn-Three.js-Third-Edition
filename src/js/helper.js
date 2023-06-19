@@ -76,9 +76,9 @@ export function initCamera(initialPosition)
     return camera;
 }
 
-export function initDefaultLighting(scene, initialPosition) 
+export function initDefaultLighting( scene, initialPosition ) 
 {
-    var position = (initialPosition !== undefined) ? initialPosition : new THREE.Vector3(-10, 30, 40);
+    var position = ( initialPosition !== undefined ) ? initialPosition : new THREE.Vector3( -10, 30, 40 );
     
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.copy(position);
