@@ -1,11 +1,12 @@
 {
-    "name": "learning-threejs",
+    "name": "learning-threejs-kr",
     "version": "3.0.0",
     "description": "Sample code for Learning Three.js third edition.",
     "main": "index.js",
     "scripts": {
-        "start.dev": "webpack serve --open",
-        "build.dev": "webpack build --mode=development",
+        "build.dev": "webpack build --mode development --config ./webpack.config.dev.js",
+        "build.dev.watch": "webpack build --mode development --config ./webpack.config.dev.js --watch",
+        "start.dev": "webpack serve --open --config ./webpack.config.dev.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -24,11 +25,14 @@
         "chroma-js": "^2.4.2",
         "dat.gui": "^0.7.9",
         "stats.js": "^0.17.0",
-        "three": "^0.153.0"
+        "three": "^0.155.0"
     },
     "devDependencies": {
+        "html-webpack-plugin": "^5.5.3",
+        "rimraf": "^5.0.1",
         "webpack": "^5.75.0",
         "webpack-cli": "^4.10.0",
-        "webpack-dev-server": "^4.11.1"
+        "webpack-dev-server": "^4.11.1",
+        "webpack-glsl-loader": "^1.0.1"
     }
 }
