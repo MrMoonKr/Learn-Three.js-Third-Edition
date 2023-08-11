@@ -49,7 +49,7 @@ function init() {
 
     let vertexCount = 1 * 1000 * 1000 ;
 
-    let geometry = new THREE.Geometry() ;
+    let geometry = new THREE.BufferGeometry() ;
     let positions = new Float32Array( vertexCount * 3 ) ;
     let colors = new Float32Array( vertexCount * 3 ) ;
     let color = new THREE.Color() ;
@@ -82,10 +82,11 @@ function init() {
       geom.colors.push( new THREE.Color( cx, cy, cz ) ) ;
     }
 
-    //geom.vertices = positions ;
-    //geom.colors = colors ;
+    geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) ) ;
+    geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) ) ;
 
-    cloud = new THREE.Points(geom, material);
+    //cloud = new THREE.Points(geom, material);
+    cloud = new THREE.Points(geometry, material);
     scene.add(cloud);
   }
 
