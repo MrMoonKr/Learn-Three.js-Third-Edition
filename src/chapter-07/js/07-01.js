@@ -1,4 +1,8 @@
+/// <reference path="../../js/util.js" />
+
+
 function init() {
+  
 
   // use the defaults
   var stats = initStats();

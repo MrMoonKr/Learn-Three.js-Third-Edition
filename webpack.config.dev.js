@@ -9,6 +9,7 @@ const CHAPTER_PARENT = path.join( __dirname, 'src/' ) ;
 const CHAPTER_LIST = [
     'ch01' ,
     //'ch02' ,
+    'ch07' ,
 ] ;
 const HTML_TEMPLATE = './src/template.html' ;
 

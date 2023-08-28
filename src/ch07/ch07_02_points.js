@@ -1,4 +1,7 @@
 import * as THREE from 'three' ; // "importmap"을 사용하거나 node, npm, webpack 사용하여 번들링이 필요하다.
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls' ;
+import Stats from 'three/examples/jsm/libs/stats.module' ;
+
 
 /**
  * @type {App}
@@ -30,22 +33,102 @@ class App
          * @type {THREE.PerspectiveCamera}
          */
         this.camera     = undefined ;
-
+        /**
+         * @type {OrbitControls}
+         */
+        this.controls   = undefined ;
+        /**
+         * @type {Stats}
+         */
+        this.stats      = undefined ;
 
 
         this._setupRenderer() ;
         this._setupScene() ;
         this._setupCamera() ;
+        this._setupConrols() ;
+        this._setupStats() ;
 
+        this.points = undefined ;
+        this.createPoints() ;
+    }
+
+    createPoints( vertexCount = 1 * 1000 * 1000 )
+    {
+        
+        console.log( `생성 시도 정점 수 : ${vertexCount}` );
+
+        if ( this.points )
+        {
+            this.scene.remove( this.points ) ;
+            this.points = undefined ;
+        }
+
+        let material        = new THREE.PointsMaterial( {
+            size: 2,
+            vertexColors: true,
+            color: 0xffffff
+        } ) ;
+
+        //let vertexCount     = 1 * 1000 * 1000 ;
+
+        let geometry        = new THREE.BufferGeometry() ;
+        let positions       = new Float32Array( vertexCount * 3 ) ;
+        let colors          = new Float32Array( vertexCount * 3 ) ;
+        let color           = new THREE.Color() ;
+
+        let worldSize       = 1000 ;
+        let worldHalfSize   = worldSize / 2 ;
+
+        for ( let i = 0, l = positions.length; i < l; i += 3 ) 
+        {
+            let x           = Math.random() * worldSize - worldHalfSize ;
+            let y           = Math.random() * worldSize - worldHalfSize ;
+            let z           = Math.random() * worldSize - worldHalfSize ;
+
+            positions[ i + 0 ] = x ;
+            positions[ i + 1 ] = y ;
+            positions[ i + 2 ] = z ;
+
+            //geom.vertices.push( new THREE.Vector3( x, y, z ) ) ;
+
+            let cx = ( x / worldSize ) + 0.5 ;
+            let cy = ( y / worldSize ) + 0.5 ;
+            let cz = ( z / worldSize ) + 0.5 ;
+
+            color.setRGB( cx, cy, cz ) ;
+
+            colors[ i + 0 ] = color.r ;
+            colors[ i + 1 ] = color.g ;
+            colors[ i + 2 ] = color.b ;
+
+            //geom.colors.push( new THREE.Color( cx, cy, cz ) );
+        }
+
+        geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+        geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+
+        //cloud = new THREE.Points(geom, material);
+        this.points = new THREE.Points( geometry, material );
+        this.scene.add( this.points );
     }
 
     onUpdate( deltaTime )
     {
+        this.controls.update() ;
+        this.stats.update() ;
+
         //console.log( `[App] onUpdate() 호출 : ${deltaTime}` ) ;
         const cube = this.scene.getObjectByName( 'cube' );
         if ( cube )
         {
             cube.rotateY( 3 * Math.PI / 180 ) ;
+        }
+
+        if ( this.points )
+        {
+            this.points.rotation.x += 0.1 * deltaTime ;
+            this.points.rotation.y += 0.2 * deltaTime ;
         }
     }
 
@@ -99,11 +182,24 @@ class App
             50 ,
             this.canvas.width / this.canvas.height ,
             0.1 ,
-            3000
+            10000
         ) ;
 
-        this.camera.position.set( 5, 10, 10 ) ;
+        this.camera.position.set( 5, 10, 1000 ) ;
         this.camera.lookAt( this.scene.position ) ;
+    }
+
+    _setupConrols()
+    {
+        this.controls = new OrbitControls( this.camera, this.renderer.domElement ) ;
+
+        this.controls.screenSpacePanning = true ;
+    }
+
+    _setupStats()
+    {
+        this.stats = new Stats() ;
+        document.body.appendChild( this.stats.dom ) ;
     }
 }
 
@@ -167,6 +263,60 @@ window.addEventListener( 'resize', ( e ) => {
 
 window.addEventListener( 'keydown', ( e ) => {
     console.log( `[정보] KeyDown 이벤트 발생 : ${e.key}, ${e.code}, ${e.keyCode}` ) ;
+
+    switch ( e.key )
+    {
+        case '1':
+            {
+                theApp.createPoints( 1 * 1000 * 1000 ) ;
+            }
+            break;
+        case '2':
+            {
+                theApp.createPoints( 2 * 1000 * 1000 ) ;
+            }
+            break;
+        case '3':
+            {
+                theApp.createPoints( 3 * 1000 * 1000 ) ;
+            }
+            break;
+        case '4':
+            {
+                theApp.createPoints( 4 * 1000 * 1000 ) ;
+            }
+            break;
+        case '5':
+            {
+                theApp.createPoints( 5 * 1000 * 1000 ) ;
+            }
+            break;
+        case '6':
+            {
+                theApp.createPoints( 6 * 1000 * 1000 ) ;
+            }
+            break;
+        case '7':
+            {
+                theApp.createPoints( 7 * 1000 * 1000 ) ;
+            }
+            break;
+        case '8':
+            {
+                theApp.createPoints( 8 * 1000 * 1000 ) ;
+            }
+            break;
+        case '9':
+            {
+                theApp.createPoints( 9 * 1000 * 1000 ) ;
+            }
+            break;
+        case '0':
+            {
+                theApp.createPoints( 10 * 1000 * 1000 ) ;
+            }
+            break;
+    }
 } );
 
 window.addEventListener( 'keyup', ( e ) => {

@@ -1,3 +1,5 @@
+/// <reference path="../../js/util.js" />
+
 function init() {
 
   // use the defaults
