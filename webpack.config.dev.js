@@ -25,6 +25,7 @@ module.exports = async () => {
 
         entry: {
             //'01-01': './src/chapter-01/js/01-01.js',
+            "test-pointclouds": './src/point-clouds.js',
 
             ...generatedEntries,
 
@@ -60,6 +61,12 @@ module.exports = async () => {
             //     //append: '\n//# sourceMappingURL=[file].map'
             //     append: '\n//# sourceMappingURL=[name].bundle.js.map'
             // } ) ,
+
+            new HtmlWebpackPlugin( {
+                filename: 'test-pointclouds' + '.html' ,
+                chunks: ['test-pointclouds'],
+                template: './src/template-test.html'
+            } ),
 
             ...generatedPlugins ,
 
