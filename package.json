@@ -4,7 +4,7 @@
     "description": "Sample code for Learning Three.js third edition.",
     "main": "index.js",
     "scripts": {
-        "server.dev": "npm run build.dev",
+        "server.dev": "npm run build.dev && live-server --port=8090",
         "build.dev": "rimraf ./public && webpack build --mode development --config ./webpack.config.dev.js",
         "build.dev.watch": "webpack build --mode development --config ./webpack.config.dev.js --watch",
         "start.dev": "webpack serve --open --config ./webpack.config.dev.js",
@@ -26,6 +26,7 @@
         "chroma-js": "^2.4.2",
         "dat.gui": "^0.7.9",
         "http-server": "^14.1.1",
+        "live-server": "^1.2.2",
         "stats.js": "^0.17.0",
         "three": "^0.155.0"
     },
