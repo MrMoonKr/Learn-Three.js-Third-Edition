@@ -51,7 +51,16 @@ class App
         this._setupStats() ;
         this._setupGUI() ;
 
+        /**
+         * @type {THREE.BufferGeometry}
+         */
+        this.geometry = undefined ;
+        /**
+         * @type {THREE.PointsMaterial}
+         */
+        this.material = undefined ;
         this.points = undefined ;
+
         this.createPoints() ;
     }
 
@@ -61,19 +70,20 @@ class App
 
         if ( this.points ) // 기존 리소스 존재하면 삭제
         {
+            if ( this.geometry ) this.geometry.dispose() ;
+            if ( this.material ) this.material.dispose() ;
+
             this.scene.remove( this.points ) ;
             this.points = undefined ;
         }
 
-        let material        = new THREE.PointsMaterial( {
+        this.material       = new THREE.PointsMaterial( {
             size: 2,
             vertexColors: true,
             color: 0xffffff
         } ) ;
 
-        //let vertexCount     = 1 * 1000 * 1000 ;
-
-        let geometry        = new THREE.BufferGeometry() ;
+        this.geometry       = new THREE.BufferGeometry() ;
         let positions       = new Float32Array( vertexCount * 3 ) ;
         let colors          = new Float32Array( vertexCount * 3 ) ;
         let color           = new THREE.Color() ;
@@ -91,8 +101,6 @@ class App
             positions[ i + 1 ] = y ;
             positions[ i + 2 ] = z ;
 
-            //geom.vertices.push( new THREE.Vector3( x, y, z ) ) ;
-
             let cx = ( x / worldSize ) + 0.5 ;
             let cy = ( y / worldSize ) + 0.5 ;
             let cz = ( z / worldSize ) + 0.5 ;
@@ -102,15 +110,12 @@ class App
             colors[ i + 0 ] = color.r ;
             colors[ i + 1 ] = color.g ;
             colors[ i + 2 ] = color.b ;
-
-            //geom.colors.push( new THREE.Color( cx, cy, cz ) );
         }
 
-        geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-        geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+        this.geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+        this.geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
 
-        //cloud = new THREE.Points(geom, material);
-        this.points = new THREE.Points( geometry, material );
+        this.points = new THREE.Points( this.geometry, this.material );
         this.scene.add( this.points );
     }
 
