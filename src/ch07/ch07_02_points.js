@@ -1,6 +1,7 @@
 import * as THREE from 'three' ; // "importmap"을 사용하거나 node, npm, webpack 사용하여 번들링이 필요하다.
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls' ;
 import Stats from 'three/examples/jsm/libs/stats.module' ;
+import GUI from 'three/examples/jsm/libs/lil-gui.module.min.js' ;
 
 
 /**
@@ -48,6 +49,7 @@ class App
         this._setupCamera() ;
         this._setupConrols() ;
         this._setupStats() ;
+        this._setupGUI() ;
 
         this.points = undefined ;
         this.createPoints() ;
@@ -55,10 +57,9 @@ class App
 
     createPoints( vertexCount = 1 * 1000 * 1000 )
     {
-        
-        console.log( `생성 시도 정점 수 : ${vertexCount}` );
+        //console.log( `생성 시도 정점 수 : ${vertexCount}` );
 
-        if ( this.points )
+        if ( this.points ) // 기존 리소스 존재하면 삭제
         {
             this.scene.remove( this.points ) ;
             this.points = undefined ;
@@ -201,6 +202,22 @@ class App
         this.stats = new Stats() ;
         document.body.appendChild( this.stats.dom ) ;
     }
+
+    _setupGUI()
+    {
+        this.gui = new GUI() ;
+
+        this.gui.add( document, 'title' ) ;
+
+        this.NumberOfVertices = 1;
+        this.gui.add( this, 'NumberOfVertices', 1, 100, 1 ).onChange( value => {
+            //console.log( `요청 정점 수 : ${value} x 1000 x 1000` ) ;
+            //this.createPoints( value * 1000 * 1000 ) ;
+        } ).onFinishChange( value => {
+            console.log( `생성 정점 수 : ${value} x 1000 x 1000` ) ;
+            this.createPoints( value * 1000 * 1000 ) ;
+        } ) ;
+    }
 }
 
 // 웹 시작 및 웹 메인 루프
@@ -235,6 +252,8 @@ function init()
 {
     console.log( '앱 초기화' );
     console.log( 'Theree.js 버전 : ' + THREE.REVISION ); // 현재 155
+
+    document.title  = '스트레스 테스트' ;
 
     const canvas    = document.getElementById( 'threejs-canvas' );
     //console.log( `[정보] 캔버스 크기 ${canvas.width} x ${canvas.height}` );
